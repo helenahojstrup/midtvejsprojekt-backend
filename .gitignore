@@ -1,0 +1,11 @@
+# Project exclude paths
+/node_modules/
+/node_modules/balanced-match/
+/node_modules/brace-expansion/
+/node_modules/express/LICENSE
+/node_modules/express/Readme.md
+/node_modules/minimatch/
+/node_modules/nodemon/
+/node_modules/simple-update-notifier/build/index.js
+/node_modules/simple-update-notifier/LICENSE
+/node_modules/simple-update-notifier/README.md
