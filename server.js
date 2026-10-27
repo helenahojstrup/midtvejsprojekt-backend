@@ -4,6 +4,8 @@ const cors = require("cors");
 
 const app = express();
 
+app.use(cors());
+
 //Host, user, password database
 const connection = mysql.createConnection({
     //process.env.KEYWORD
@@ -172,6 +174,33 @@ app.get("/bodytypes", (req, res) => {
         console.log(results)
         res.send(results)})
 })
+
+// 5 mest balancerede pokemon
+app.get("/pokemon/mostBalanced", (req, res) => {
+    connection.query("SELECT name, (speed + attack + defence + hp + special_defence + special_attack) / 6 AS average_stats, GREATEST(speed, attack, defence, hp, special_defence, special_attack) - LEAST(speed, attack, defence, hp, special_defence, special_attack) AS stat_range FROM pokemon ORDER BY stat_range ASC LIMIT 5", (error, results) =>{
+        res.json(results)
+
+})
+
+// hvilken træner har flest pokemon
+app.get("/trainer/mostPokemon", (req, res)=> {
+    connection.query("SELECT trainer.trainer_name, COUNT(*) AS pokemon_count FROM pokemon INNER JOIN trainer_pokemon ON pokemon.pokedex_number = trainer_pokemon.pokedex_number  INNER JOIN trainer ON trainer.trainer_id = trainer_pokemon.trainer_id GROUP BY trainer.trainer_id, trainer.trainer_name ORDER BY pokemon_count DESC LIMIT 1", (error, results) =>{
+        res.json(results)
+
+    })
+
+// søge efter specifikt primary og secondary types
+    app.get("/pokemon/specificTypes", (req, res) => {
+        const primaryType = req.query.primary_type;
+        const secondaryType = req.query.secondary_type;
+
+
+        connection.query("SELECT * FROM pokemon WHERE primary_type = ? AND secondary_type = ?",
+            [primaryType, secondaryType]}
+    res.json(results);
+})
+})
+
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
 });
