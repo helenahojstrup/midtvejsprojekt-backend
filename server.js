@@ -82,6 +82,28 @@ fetch("http://localhost:3000/trainer/catch?trainer_id=1&pokedex_number=25", {
         console.log(data);
     });
 
+//api - filtrering af diverse kriterier
+app.get('/pokemon/filters', (req, res) => {
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
