@@ -88,27 +88,6 @@ app.get('/pokemon/filters', (req, res) => {
 })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // top 3 strongest pokemon
 app.get('/top3strongest', (req, res)=>{
     const query = "SELECT name, (speed + attack + hp + defence + special_attack + special_defence) AS totalStat FROM pokemon ORDER BY totalStat DESC LIMIT 3";
@@ -159,33 +138,6 @@ app.get('/typeHighestAvgStat', (req, res) => {
         res.send(resultat3);
     });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 app.get("/bodytypes", (req, res) => {
