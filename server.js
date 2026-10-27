@@ -36,11 +36,7 @@ app.get("/all/trainers/withPokemon", (req, res) =>{
 })
 
 
-app.get("/test", (req, res)=>{
-    connection.query("SELECT * FROM pokemon", (error, results)=>{
-        console.log(results)
-    })
-})
+
 
 
 
