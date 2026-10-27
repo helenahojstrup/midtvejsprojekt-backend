@@ -30,14 +30,7 @@ app.get("/all/trainers", (req, res) =>{
 
 // alle trænere med deres pokemon
 app.get("/all/trainers/withPokemon", (req, res) =>{
-    connection.query("SELECT
-    name,
-        trainer_name
-    FROM pokemon
-    INNER JOIN trainer_pokemon
-    ON pokemon.pokedex_number = trainer_pokemon.pokedex_number
-    INNER JOIN trainer
-    ON trainer.trainer_id = trainer_pokemon.trainer_id", (error, results) =>{
+    connection.query("SELECT name, trainer_name FROM pokemon INNER JOIN trainer_pokemon ON pokemon.pokedex_number = trainer_pokemon.pokedex_number INNER JOIN trainer ON trainer.trainer_id = trainer_pokemon.trainer_id", (error, results) =>{
     res.json(results)
 })
 })
