@@ -45,6 +45,14 @@ app.post("/trainer/new/", (req, res) => {
     );
 });
 
+// her kan man fetch en ny trainer
+fetch("http://localhost:3000/trainer/new/?name=Ash&hometown=PalletTown&age=10")
+    .then(response => response.text())
+    .then(data => {
+        console.log(data);
+    });
+
+
 //Her kan man tilføje en pokemon til en trainer
 app.post("/trainer/catch", (req, res) => {
     const trainer_id = req.body.trainer_id;
@@ -58,6 +66,16 @@ app.post("/trainer/catch", (req, res) => {
         }
     );
 });
+
+//her kan man fetch en ny trainer
+fetch("http://localhost:3000/trainer/catch?trainer_id=1&pokedex_number=25", {
+    method: "POST"
+})
+    .then(response => response.text())
+    .then(data => {
+        console.log(data);
+    });
+
 
 
 
