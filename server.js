@@ -15,7 +15,7 @@ const connection = mysql.createConnection({
 
 // alle pokemon
 app.get("/all/pokemon", (req, res)=>{
-    connection.query("SELECT * FROM pokemon", (error, results)=>{
+    connection.query("SELECT * FROM pokemon", (error, results)=> {
         res.json(results);
     })
 })
@@ -79,8 +79,22 @@ app.post("/trainer/catch", (req, res) => {
 
 //api - filtrering af diverse kriterier
 app.get('/pokemon/filters', (req, res) => {
+    const type = req.query.primary_type || '%'
+    const minAttack = req.query.minAttack || 0
+    const pokemonName = '%' + (req.query.name || '') + '%'
+    const minHp = req.query.hp || 0
+    const orderByAttack = req.query.sorter_attack || 'ASC'
+    let sorting = 'ASC'
+    if(orderByAttack === 'DESC') {
+        sorting = 'DESC'
+    }
+        connection.query('SELECT * FROM pokemon WHERE primary_type LIKE ? AND attack >= ? AND name LIKE ? AND hp >= ? ORDER BY attack ' + sorting, [type, minAttack, pokemonName, minHp], (error, results) => {
+            res.send(results)
 
+        })
 })
+
+
 
 
 
