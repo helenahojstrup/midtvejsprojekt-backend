@@ -17,7 +17,7 @@ const connection = mysql.createConnection({
 
 // alle pokemon
 app.get("/all/pokemon", (req, res)=>{
-    connection.query("SELECT * FROM pokemon", (error, results)=>{
+    connection.query("SELECT * FROM pokemon", (error, results)=> {
         res.json(results);
     })
 })
@@ -70,19 +70,24 @@ app.post("/trainer/catch", (req, res) => {
     );
 });
 
-
-
-
-
-
-
-
-
-
 //api - filtrering af diverse kriterier
 app.get('/pokemon/filters', (req, res) => {
+    const type = req.query.primary_type || '%'
+    const minAttack = req.query.minAttack || 0
+    const pokemonName = '%' + (req.query.name || '') + '%'
+    const minHp = req.query.hp || 0
+    const orderByAttack = req.query.sorter_attack || 'ASC'
+    let sorting = 'ASC'
+    if(orderByAttack === 'DESC') {
+        sorting = 'DESC'
+    }
+        connection.query('SELECT * FROM pokemon WHERE primary_type LIKE ? AND attack >= ? AND name LIKE ? AND hp >= ? ORDER BY attack ' + sorting, [type, minAttack, pokemonName, minHp], (error, results) => {
+            res.send(results)
 
+        })
 })
+
+
 
 
 
@@ -139,7 +144,21 @@ app.get('/top3weakest', (req, res) => {
     });
 });
 
+//which bodytype has the highest average stats?
+app.get('/typeHighestAvgStat', (req, res) => {
+    const query = `SELECT body_shape.type, AVG(pokemon.speed + pokemon.attack + pokemon.hp + pokemon.defence + pokemon.special_attack + pokemon.special_defence) AS averageStat FROM pokemon JOIN body_shape ON pokemon.body_shape_id = body_shape.body_shape_id GROUP BY body_shape.type ORDER BY averageStat DESC LIMIT 1`;
 
+    connection.query(query, (error, result) => {
+        let resultat3 = "";
+
+        for (let i = 0; i < result.length; i++) {
+            const averageStat = result[i].averageStat;
+
+            resultat3 += `body type: ${result[i].type} AVG stat = ${averageStat}`;
+        }
+        res.send(resultat3);
+    });
+});
 
 
 
