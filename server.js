@@ -51,12 +51,7 @@ app.post("/trainer/new/", (req, res) => {
     );
 });
 
-// her kan man fetch en ny trainer
-fetch("http://localhost:3000/trainer/new/?name=Ash&hometown=PalletTown&age=10")
-    .then(response => response.text())
-    .then(data => {
-        console.log(data);
-    });
+
 
 
 //Her kan man tilføje en pokemon til en trainer
@@ -73,14 +68,14 @@ app.post("/trainer/catch", (req, res) => {
     );
 });
 
-//her kan man fetch en ny trainer
-fetch("http://localhost:3000/trainer/catch?trainer_id=1&pokedex_number=25", {
-    method: "POST"
-})
-    .then(response => response.text())
-    .then(data => {
-        console.log(data);
-    });
+
+
+
+
+
+
+
+
 
 //api - filtrering af diverse kriterier
 app.get('/pokemon/filters', (req, res) => {
@@ -104,6 +99,43 @@ app.get('/pokemon/filters', (req, res) => {
 
 
 
+
+
+
+// top 3 strongest pokemon
+app.get('/top3strongest', (req, res)=>{
+    const query = "SELECT name, (speed + attack + hp + defence + special_attack + special_defence) AS totalStat FROM pokemon ORDER BY totalStat DESC LIMIT 3";
+
+    connection.query(query, (error, result) =>{
+        let resultat = "";
+
+        for (let i = 0; i < result.length; i++) {
+            const totalStat = result[i].totalStat;
+
+            if (totalStat > 500) {
+                resultat += `${i + 1}. ${result[i].name} total stat = ${totalStat}<br>`;
+            }
+        }
+        res.send(resultat);
+    });
+});
+
+
+//top 3 weakest pokemon
+app.get('/top3weakest', (req, res) => {
+    const query = "SELECT name, (speed + attack + hp + defence + special_attack + special_defence) AS totalStat FROM pokemon ORDER BY totalStat ASC LIMIT 3";
+
+    connection.query(query, (error, result) =>{
+        let resultat2 = "";
+
+        for (let i = 0; i < result.length; i++) {
+            const totalStat = result[i].totalStat;
+
+            resultat2 += `${i + 1}. ${result[i].name} total stat = ${totalStat}<br>`;
+        }
+        res.send(resultat2);
+    });
+});
 
 
 
