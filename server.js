@@ -68,15 +68,6 @@ app.post("/trainer/catch", (req, res) => {
     );
 });
 
-
-
-
-
-
-
-
-
-
 //api - filtrering af diverse kriterier
 app.get('/pokemon/filters', (req, res) => {
     const type = req.query.primary_type || '%'
