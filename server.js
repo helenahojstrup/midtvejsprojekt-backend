@@ -6,6 +6,9 @@ const app = express();
 
 app.use(cors());
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 //Host, user, password database
 const connection = mysql.createConnection({
     //process.env.KEYWORD
