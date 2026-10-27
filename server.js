@@ -105,7 +105,7 @@ app.get('/top3strongest', (req, res)=>{
                 resultat += `${i + 1}. ${result[i].name} total stat = ${totalStat}<br>`;
             }
         }
-        res.send(resultat);
+        res.json(resultat);
     });
 });
 
@@ -122,7 +122,7 @@ app.get('/top3weakest', (req, res) => {
 
             resultat2 += `${i + 1}. ${result[i].name} total stat = ${totalStat}<br>`;
         }
-        res.send(resultat2);
+        res.json(resultat2);
     });
 });
 
