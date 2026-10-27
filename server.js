@@ -14,9 +14,12 @@ const connection = mysql.createConnection({
 });
 
 
-app.get("/", (req, res) => {
-    res.send("Hello World!");
-});
+app.get("/all/pokemon", (req, res)=>{
+    connection.query("SELECT * FROM pokemon", (error, results)=>{
+        res.json(results);
+    })
+})
+
 
 app.get("/pokemon", (req, res) => {
     res.send("Here are all the Pokemon");
