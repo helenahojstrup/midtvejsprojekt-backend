@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
     database: process.env.DBDATABASE
 });
 
-
+// alle pokemon
 app.get("/all/pokemon", (req, res)=>{
     connection.query("SELECT * FROM pokemon", (error, results)=>{
         res.json(results);
@@ -21,9 +21,13 @@ app.get("/all/pokemon", (req, res)=>{
 })
 
 
-app.get("/pokemon", (req, res) => {
-    res.send("Here are all the Pokemon");
-});
+// alle trænere
+app.get("/all/trainers", (req, res) =>{
+    connection.query("SELECT * FROM trainer", (error, results) => {
+        res.json(results)
+    })
+})
+
 
 app.get("/test", (req, res)=>{
     connection.query("SELECT * FROM pokemon", (error, results)=>{
