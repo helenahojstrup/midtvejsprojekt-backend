@@ -30,7 +30,7 @@ app.get("/test", (req, res)=>{
 
 
 
-
+//Her kan man tilføje en ny trainer
 app.post("/trainer/new/", (req, res) => {
     const name = req.body.name;
     const hometown = req.body.hometown;
@@ -45,7 +45,19 @@ app.post("/trainer/new/", (req, res) => {
     );
 });
 
+//Her kan man tilføje en pokemon til en trainer
+app.post("/trainer/catch", (req, res) => {
+    const trainer_id = req.body.trainer_id;
+    const pokedex_number = req.body.pokedex_number;
 
+    connection.query(
+        "INSERT INTO trainer_pokemon (trainer_id, pokedex_number) VALUES (?, ?)",
+        [trainer_id, pokedex_number],
+        (error, results) => {
+            res.send("Pokemon was caught");
+        }
+    );
+});
 
 
 
