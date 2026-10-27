@@ -36,10 +36,6 @@ app.get("/all/trainers/withPokemon", (req, res) =>{
 })
 
 
-
-
-
-
 //Her kan man tilføje en ny trainer
 app.post("/trainer/new/", (req, res) => {
     const name = req.body.name;
