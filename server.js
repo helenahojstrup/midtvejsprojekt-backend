@@ -137,7 +137,21 @@ app.get('/top3weakest', (req, res) => {
     });
 });
 
+//which bodytype has the highest average stats?
+app.get('/typeHighestAvgStat', (req, res) => {
+    const query = `SELECT body_shape.type, AVG(pokemon.speed + pokemon.attack + pokemon.hp + pokemon.defence + pokemon.special_attack + pokemon.special_defence) AS averageStat FROM pokemon JOIN body_shape ON pokemon.body_shape_id = body_shape.body_shape_id GROUP BY body_shape.type ORDER BY averageStat DESC LIMIT 1`;
 
+    connection.query(query, (error, result) => {
+        let resultat3 = "";
+
+        for (let i = 0; i < result.length; i++) {
+            const averageStat = result[i].averageStat;
+
+            resultat3 += `body type: ${result[i].type} AVG stat = ${averageStat}`;
+        }
+        res.send(resultat3);
+    });
+});
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
