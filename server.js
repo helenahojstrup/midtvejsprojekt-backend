@@ -153,6 +153,39 @@ app.get('/typeHighestAvgStat', (req, res) => {
     });
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.get("/bodytypes", (req, res) => {
+    connection.query("SELECT name, type FROM pokemon INNER JOIN body_shape ON pokemon.body_shape_id = body_shape.body_shape_id", (error, results)=>{
+        console.log(results)
+        res.send(results)})
+})
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
 });
