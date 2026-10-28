@@ -141,7 +141,7 @@ app.get("/pokemon/mostBalanced", (req, res) => {
     })
 })
 
-// hvilken træner har flest pokemon
+// hvilken træner har flest pokemonnn
 app.get("/trainer/mostPokemon", (req, res)=> {
     connection.query("SELECT trainer.trainer_name, COUNT(*) AS pokemon_count FROM pokemon INNER JOIN trainer_pokemon ON pokemon.pokedex_number = trainer_pokemon.pokedex_number  INNER JOIN trainer ON trainer.trainer_id = trainer_pokemon.trainer_id GROUP BY trainer.trainer_id, trainer.trainer_name ORDER BY pokemon_count DESC LIMIT 1", (error, results) => {
         res.json(results)
