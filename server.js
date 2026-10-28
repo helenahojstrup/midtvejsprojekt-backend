@@ -112,17 +112,18 @@ app.get('/top3weakest', (req, res) => {
 
 //which bodytype has the highest average stats?
 app.get('/typeHighestAvgStat', (req, res) => {
-    const query = `SELECT body_shape.type, AVG(pokemon.speed + pokemon.attack + pokemon.hp + pokemon.defence + pokemon.special_attack + pokemon.special_defence) AS averageStat FROM pokemon JOIN body_shape ON pokemon.body_shape_id = body_shape.body_shape_id GROUP BY body_shape.type ORDER BY averageStat DESC LIMIT 1`;
+    const query = `SELECT body_shape.type, AVG(pokemon.speed + pokemon.attack + pokemon.hp + pokemon.defence + pokemon.special_attack + pokemon.special_defence) AS averageStat FROM pokemon JOIN body_shape ON pokemon.body_shape_id = body_shape.body_shape_id GROUP BY body_shape.type ORDER BY averageStat DESC LIMIT 3`;
 
     connection.query(query, (error, result) => {
-        let resultat3 = "";
+        let resultatListe = [];
 
         for (let i = 0; i < result.length; i++) {
-            const averageStat = result[i].averageStat;
-
-            resultat3 += `body type: ${result[i].type} AVG stat = ${averageStat}`;
+            resultatListe.push({
+                type: result[i].type,
+                averageStat: result[i].averageStat
+            });
         }
-        res.send(resultat3);
+        res.json(resultatListe);
     });
 });
 
@@ -135,7 +136,7 @@ app.get("/bodytypes", (req, res) => {
 
 // 5 mest balancerede pokemon
 app.get("/pokemon/mostBalanced", (req, res) => {
-    connection.query("SELECT name, (speed + attack + defence + hp + special_defence + special_attack) / 6 AS average_stats, GREATEST(speed, attack, defence, hp, special_defence, special_attack) - LEAST(speed, attack, defence, hp, special_defence, special_attack) AS stat_range FROM pokemon ORDER BY stat_range ASC LIMIT 5", (error, results) => {
+    connection.query("SELECT name, (speed + attack + defence + hp + special_defence + special_attack) / 6 AS average_stats, GREATEST(speed, attack, defence, hp, special_defence, special_attack) - LEAST(speed, attack, defence, hp, special_defence, special_attack) AS stat_range FROM pokemon ORDER BY stat_range ASC LIMIT 3", (error, results) => {
         res.json(results)
     })
 })
