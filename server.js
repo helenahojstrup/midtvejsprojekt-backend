@@ -103,17 +103,10 @@ app.get('/top3strongest', (req, res)=>{
 
 //top 3 weakest pokemon
 app.get('/top3weakest', (req, res) => {
-    const query = "SELECT name, (speed + attack + hp + defence + special_attack + special_defence) AS totalStat FROM pokemon ORDER BY totalStat ASC LIMIT 3";
+    const query = "SELECT name, (speed + attack + hp + defence + special_attack + special_defence) AS totalStat2 FROM pokemon ORDER BY totalStat2 ASC LIMIT 3";
 
     connection.query(query, (error, result) =>{
-        let resultat2 = "";
-
-        for (let i = 0; i < result.length; i++) {
-            const totalStat = result[i].totalStat;
-
-            resultat2 += `${i + 1}. ${result[i].name} total stat = ${totalStat}<br>`;
-        }
-        res.json(resultat2);
+        res.json(result);
     });
 });
 
