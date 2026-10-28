@@ -96,16 +96,7 @@ app.get('/top3strongest', (req, res)=>{
     const query = "SELECT name, (speed + attack + hp + defence + special_attack + special_defence) AS totalStat FROM pokemon ORDER BY totalStat DESC LIMIT 3";
 
     connection.query(query, (error, result) =>{
-        let resultat = "";
-
-        for (let i = 0; i < result.length; i++) {
-            const totalStat = result[i].totalStat;
-
-            if (totalStat > 500) {
-                resultat += `${i + 1}. ${result[i].name} total stat = ${totalStat}<br>`;
-            }
-        }
-        res.json(resultat);
+        res.json(result);
     });
 });
 
