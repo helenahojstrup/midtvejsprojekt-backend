@@ -29,6 +29,7 @@ app.get("/all/pokemon", (req, res)=>{
 // alle trænere
 app.get("/all/trainers", (req, res) =>{
     connection.query("SELECT * FROM trainer", (error, results) => {
+        console.log(results)
         res.json(results)
     })
 })
