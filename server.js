@@ -20,7 +20,7 @@ const connection = mysql.createConnection({
 
 // alle pokemon
 app.get("/all/pokemon", (req, res)=>{
-    connection.query("SELECT * FROM pokemon", (error, results)=> {
+    connection.query("SELECT * FROM pokemon INNER JOIN moves ON pokemon.pokedex_number = moves.pokemon_pokedex_number INNER JOIN first_appearance ON first_appearance.first_appearance_id = pokemon.first_appearance_id", (error, results)=> {
         res.json(results);
     })
 })
@@ -163,6 +163,7 @@ app.get("/trainer/mostPokemon", (req, res)=> {
                 res.json(results)
     })
 })
+
 
     app.listen(3000, () => {
     console.log("Server is running on port 3000");
