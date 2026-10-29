@@ -73,7 +73,7 @@ app.post("/trainer/catch", (req, res) => {
     );
 });
 
-//api - filters for pokemon
+//api - filters for all pokemon
 app.get('/pokemon/filters', (req, res) => {
     const type = req.query.primary_type || '%'
     const minAttack = req.query.minAttack || 0
