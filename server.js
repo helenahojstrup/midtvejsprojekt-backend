@@ -18,7 +18,7 @@ const connection = mysql.createConnection({
     database: process.env.DBDATABASE
 });
 
-// alle pokemon
+// All pokemon
 app.get("/all/pokemon", (req, res)=>{
     connection.query("SELECT * FROM pokemon INNER JOIN moves ON pokemon.pokedex_number = moves.pokemon_pokedex_number INNER JOIN first_appearance ON first_appearance.first_appearance_id = pokemon.first_appearance_id", (error, results)=> {
         res.json(results);
@@ -26,14 +26,14 @@ app.get("/all/pokemon", (req, res)=>{
 })
 
 
-// alle trænere
+// All trainers
 app.get("/all/trainers", (req, res) =>{
     connection.query("SELECT * FROM trainer", (error, results) => {
         res.json(results)
     })
 })
 
-// alle trænere med deres pokemon
+// All trainers with their pokemon
 app.get("/all/trainers/withPokemon", (req, res) =>{
     connection.query("SELECT name, trainer_name FROM pokemon INNER JOIN trainer_pokemon ON pokemon.pokedex_number = trainer_pokemon.pokedex_number INNER JOIN trainer ON trainer.trainer_id = trainer_pokemon.trainer_id", (error, results) =>{
     res.json(results)
@@ -41,7 +41,7 @@ app.get("/all/trainers/withPokemon", (req, res) =>{
 })
 
 
-//Her kan man tilføje en ny trainer
+//Create new trainer
 app.post("/trainer/new/", (req, res) => {
     const name = req.body.name;
     const hometown = req.body.hometown;
@@ -59,7 +59,7 @@ app.post("/trainer/new/", (req, res) => {
 
 
 
-//Her kan man tilføje en pokemon til en trainer
+//Add pokemon to trainer
 app.post("/trainer/catch", (req, res) => {
     const trainer_id = req.body.trainer_id;
     const pokedex_number = req.body.pokedex_number;
@@ -73,7 +73,7 @@ app.post("/trainer/catch", (req, res) => {
     );
 });
 
-//api - filtrering af diverse kriterier
+//api - filters for pokemon
 app.get('/pokemon/filters', (req, res) => {
     const type = req.query.primary_type || '%'
     const minAttack = req.query.minAttack || 0
@@ -134,21 +134,21 @@ app.get("/bodytypes", (req, res) => {
         res.send(results)})
 })
 
-// 5 mest balancerede pokemon
+// 5 most balanced pokemon
 app.get("/pokemon/mostBalanced", (req, res) => {
     connection.query("SELECT pokedex_number, name, (speed + attack + defence + hp + special_defence + special_attack) / 6 AS average_stats, GREATEST(speed, attack, defence, hp, special_defence, special_attack) - LEAST(speed, attack, defence, hp, special_defence, special_attack) AS stat_range FROM pokemon ORDER BY stat_range ASC LIMIT 3", (error, results) => {
         res.json(results)
     })
 })
 
-// hvilken træner har flest pokemonnn
+// which trainer has the most pokemon
 app.get("/trainer/mostPokemon", (req, res)=> {
     connection.query("SELECT trainer.trainer_name, COUNT(*) AS pokemon_count FROM pokemon INNER JOIN trainer_pokemon ON pokemon.pokedex_number = trainer_pokemon.pokedex_number  INNER JOIN trainer ON trainer.trainer_id = trainer_pokemon.trainer_id GROUP BY trainer.trainer_id, trainer.trainer_name ORDER BY pokemon_count DESC LIMIT 1", (error, results) => {
         res.json(results)
     })
 })
 
-// søge efter specifikt primary og secondary types
+// search for specific types
     app.get("/pokemon/specificTypes", (req, res) => {
         const primaryType = req.query.primary_type;
         const secondaryType = req.query.secondary_type;
@@ -158,7 +158,7 @@ app.get("/trainer/mostPokemon", (req, res)=> {
     })
 })
 
-
+// app listen
     app.listen(3000, () => {
     console.log("Server is running on port 3000");
 });
