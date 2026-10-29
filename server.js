@@ -96,49 +96,34 @@ app.get('/top3strongest', (req, res)=>{
     const query = "SELECT name, (speed + attack + hp + defence + special_attack + special_defence) AS totalStat FROM pokemon ORDER BY totalStat DESC LIMIT 3";
 
     connection.query(query, (error, result) =>{
-        let resultat = "";
-
-        for (let i = 0; i < result.length; i++) {
-            const totalStat = result[i].totalStat;
-
-            if (totalStat > 500) {
-                resultat += `${i + 1}. ${result[i].name} total stat = ${totalStat}<br>`;
-            }
-        }
-        res.json(resultat);
+        res.json(result);
     });
 });
 
 
 //top 3 weakest pokemon
 app.get('/top3weakest', (req, res) => {
-    const query = "SELECT name, (speed + attack + hp + defence + special_attack + special_defence) AS totalStat FROM pokemon ORDER BY totalStat ASC LIMIT 3";
+    const query = "SELECT name, (speed + attack + hp + defence + special_attack + special_defence) AS totalStat2 FROM pokemon ORDER BY totalStat2 ASC LIMIT 3";
 
     connection.query(query, (error, result) =>{
-        let resultat2 = "";
-
-        for (let i = 0; i < result.length; i++) {
-            const totalStat = result[i].totalStat;
-
-            resultat2 += `${i + 1}. ${result[i].name} total stat = ${totalStat}<br>`;
-        }
-        res.json(resultat2);
+        res.json(result);
     });
 });
 
 //which bodytype has the highest average stats?
 app.get('/typeHighestAvgStat', (req, res) => {
-    const query = `SELECT body_shape.type, AVG(pokemon.speed + pokemon.attack + pokemon.hp + pokemon.defence + pokemon.special_attack + pokemon.special_defence) AS averageStat FROM pokemon JOIN body_shape ON pokemon.body_shape_id = body_shape.body_shape_id GROUP BY body_shape.type ORDER BY averageStat DESC LIMIT 1`;
+    const query = `SELECT body_shape.type, AVG(pokemon.speed + pokemon.attack + pokemon.hp + pokemon.defence + pokemon.special_attack + pokemon.special_defence) AS averageStat FROM pokemon JOIN body_shape ON pokemon.body_shape_id = body_shape.body_shape_id GROUP BY body_shape.type ORDER BY averageStat DESC LIMIT 3`;
 
     connection.query(query, (error, result) => {
-        let resultat3 = "";
+        let resultatListe = [];
 
         for (let i = 0; i < result.length; i++) {
-            const averageStat = result[i].averageStat;
-
-            resultat3 += `body type: ${result[i].type} AVG stat = ${averageStat}`;
+            resultatListe.push({
+                type: result[i].type,
+                averageStat: result[i].averageStat
+            });
         }
-        res.send(resultat3);
+        res.json(resultatListe);
     });
 });
 
@@ -151,12 +136,12 @@ app.get("/bodytypes", (req, res) => {
 
 // 5 mest balancerede pokemon
 app.get("/pokemon/mostBalanced", (req, res) => {
-    connection.query("SELECT name, (speed + attack + defence + hp + special_defence + special_attack) / 6 AS average_stats, GREATEST(speed, attack, defence, hp, special_defence, special_attack) - LEAST(speed, attack, defence, hp, special_defence, special_attack) AS stat_range FROM pokemon ORDER BY stat_range ASC LIMIT 5", (error, results) => {
+    connection.query("SELECT pokedex_number, name, (speed + attack + defence + hp + special_defence + special_attack) / 6 AS average_stats, GREATEST(speed, attack, defence, hp, special_defence, special_attack) - LEAST(speed, attack, defence, hp, special_defence, special_attack) AS stat_range FROM pokemon ORDER BY stat_range ASC LIMIT 3", (error, results) => {
         res.json(results)
     })
 })
 
-// hvilken træner har flest pokemon
+// hvilken træner har flest pokemonnn
 app.get("/trainer/mostPokemon", (req, res)=> {
     connection.query("SELECT trainer.trainer_name, COUNT(*) AS pokemon_count FROM pokemon INNER JOIN trainer_pokemon ON pokemon.pokedex_number = trainer_pokemon.pokedex_number  INNER JOIN trainer ON trainer.trainer_id = trainer_pokemon.trainer_id GROUP BY trainer.trainer_id, trainer.trainer_name ORDER BY pokemon_count DESC LIMIT 1", (error, results) => {
         res.json(results)
