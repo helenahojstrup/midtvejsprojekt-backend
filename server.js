@@ -136,7 +136,7 @@ app.get("/bodytypes", (req, res) => {
 
 // 5 mest balancerede pokemon
 app.get("/pokemon/mostBalanced", (req, res) => {
-    connection.query("SELECT name, (speed + attack + defence + hp + special_defence + special_attack) / 6 AS average_stats, GREATEST(speed, attack, defence, hp, special_defence, special_attack) - LEAST(speed, attack, defence, hp, special_defence, special_attack) AS stat_range FROM pokemon ORDER BY stat_range ASC LIMIT 3", (error, results) => {
+    connection.query("SELECT pokedex_number, name, (speed + attack + defence + hp + special_defence + special_attack) / 6 AS average_stats, GREATEST(speed, attack, defence, hp, special_defence, special_attack) - LEAST(speed, attack, defence, hp, special_defence, special_attack) AS stat_range FROM pokemon ORDER BY stat_range ASC LIMIT 3", (error, results) => {
         res.json(results)
     })
 })
